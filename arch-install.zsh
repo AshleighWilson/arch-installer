@@ -28,5 +28,5 @@ mount /dev/sda1 /mnt/boot
 swapon /dev/sda2 
 
 # Install software
-pacstrap /mnt base base-devel linux linux-firmware zsh gvim grub efibootmgr networkmanager sudo git openssh xorg-server xinit
+pacstrap /mnt base base-devel linux linux-firmware zsh gvim grub efibootmgr networkmanager sudo git openssh xorg-server xorg-xinit
 
