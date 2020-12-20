@@ -52,12 +52,12 @@ function base_configuration() {
     echo "done."
 
     echo -n "Configuring /etc/locale.gen.. "
-    sed -i '/en_GB.UTF-8 UTF-8/s/^#//g' /etc/locale.gen
+    sed -i "/en_GB.UTF-8 UTF-8/s/^#//g" /etc/locale.gen
     locale-gen
     echo "done."
 
     echo -n " - Configuring /etc/sudoers.. "
-    sed -i '/%wheel ALL=(ALL) ALL/^#//g' /etc/sudoers
+    sed -i "/\%wheel ALL=(ALL) ALL/s/^# //g" /etc/sudoers
     echo "done."
 
     echo -n "Configuring /etc/ssh/sshd_config.. "
