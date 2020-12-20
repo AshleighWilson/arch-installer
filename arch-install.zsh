@@ -61,7 +61,7 @@ function base_configuration() {
     echo "done."
 
     echo -n "Configuring /etc/ssh/sshd_config.. "
-    sed -i "/PermitRootLogin no/s/^#//g" /etc/ssh/sshd_config
+    sed -i "/PermitRootLogin prohibit-password/s/^#.*/PermitRootLogin no/g" /etc/ssh/sshd_config
     systemctl enable sshd
     echo "done."
 
