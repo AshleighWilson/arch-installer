@@ -34,17 +34,36 @@ function base_install() {
     # Generate the filesystem tables using UUID's.
     genfstab -U /mnt >> /mnt/etc/fstab
 
-    cp $0 /mnt/root
-    arch-chroot /mnt /mnt/root/$0
+    # Clone the arch installer into the new system.
+    # Then execute the post-install configuration.
+    git clone https://github.com/ashleighwilson/arch-installer /mnt/root/arch-installer
+    chmod +x /mnt/root/arch-installer/arch-install.zsh
+    arch-chroot /mnt /root/arch-installer/arch-install.zsh config
     umount -R /mnt
 }
 
 function base_configuration() {
+    echo -n "Setting timezone.. "
     ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
+    echo "done."
 
+    echo -n "Setting hardware clock.. "
     hwclock --systohc
+    echo "done."
 
-    vim /etc/locale.gen locale-gen
+    echo -n "Configuring /etc/locale.gen.. "
+    sed -i '/en_GB.UTF-8 UTF-8/s/^#//g' /etc/locale.gen
+    locale-gen
+    echo "done."
+
+    echo -n " - Configuring /etc/sudoers.. "
+    sed -i '/%wheel ALL=(ALL) ALL/^#//g' /etc/sudoers
+    echo "done."
+
+    echo -n "Configuring /etc/ssh/sshd_config.. "
+    sed -i '/PermitRootLogin no/^#//g' /etc/ssh/sshd_config
+    systemctl enable sshd
+    echo "done."
 
     echo -n " - Creating /etc/locale.conf.. "
     echo "LANG=en_GB.UTF-8" > /etc/locale.conf
@@ -68,7 +87,6 @@ function base_configuration() {
     echo "done."
     exit
 }
-# change wheel option in sudo config
 
 # Change PermitRootLogin in sshd_config
 
