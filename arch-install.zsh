@@ -75,10 +75,10 @@ function base_configuration() {
 
 case "$1" in
     install)
-        base_install()
+        base_install
         ;;
     config)
-        base_configuration()
+        base_configuration
         ;;
     *)
         echo "No argument give. Please use either 'install' or 'config'."
