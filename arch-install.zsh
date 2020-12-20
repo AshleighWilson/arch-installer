@@ -37,7 +37,6 @@ function base_install() {
     cp $0 /mnt/root
     arch-chroot /mnt /mnt/root/$0
     umount -R /mnt
-    reboot
 }
 
 function base_configuration() {
