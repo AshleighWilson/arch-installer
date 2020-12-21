@@ -43,15 +43,15 @@ function base_install() {
 }
 
 function base_configuration() {
-    echo -n "Setting timezone.. "
+    echo -n " - Setting timezone.. "
     ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
     echo "done."
 
-    echo -n "Setting hardware clock.. "
+    echo -n " - Setting hardware clock.. "
     hwclock --systohc
     echo "done."
 
-    echo -n "Configuring /etc/locale.gen.. "
+    echo -n " - Configuring /etc/locale.gen.. "
     sed -i "/en_GB.UTF-8 UTF-8/s/^#//g" /etc/locale.gen
     locale-gen
     echo "done."
@@ -60,7 +60,7 @@ function base_configuration() {
     sed -i "/\%wheel ALL=(ALL) ALL/s/^# //g" /etc/sudoers
     echo "done."
 
-    echo -n "Configuring /etc/ssh/sshd_config.. "
+    echo -n " - Configuring /etc/ssh/sshd_config.. "
     sed -i "/PermitRootLogin prohibit-password/s/^#.*/PermitRootLogin no/g" /etc/ssh/sshd_config
     systemctl enable sshd
     echo "done."
@@ -80,6 +80,10 @@ function base_configuration() {
 
     echo -n " - Updating root password.. "
     passwd
+
+    echo -n " - Adding user ashleigh.. "
+    useradd -G wheel -m -d /home/ashleigh ashleigh
+    passwd ashleighwilson
 
     echo -n " - Installing and configuring GRUB to /boot.. "
     grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
